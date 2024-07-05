@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='ja' xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${value}">Hello World</title>
+    <script>
+        function sendMessage(event) {
+            event.preventDefault();
+            var message = document.getElementById("message").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/confirm-message", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.title = xhr.responseText;
+                    document.querySelector("h1").innerText = xhr.responseText;
+                }
+            };
+            xhr.send("message=" + encodeURIComponent(message));
+        }
+    </script>
+</head>
+<body>
+<h1 th:text="${value}">Hello World</h1>
+<form onsubmit="sendMessage(event)">
+    <label>
+        メッセージ:
+        <input type="text" name="message" id="message">
+    </label>
+    <button type="submit">送信</button>
+</form>
+<div id="response"></div>
+</body>
+</html>
